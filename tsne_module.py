@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+eps = 1e-10
 
 class tSNE(nn.Module):
     def __init__(self, size, latent_dim=2):
@@ -13,9 +14,9 @@ class tSNE(nn.Module):
         all_y = self.embedding.weight
         dist = F.pdist(all_y).pow(2)
         dist = (1. + dist).pow(-1.0 * self.degrees_of_freedom)
-        q = dist / dist.sum()
+        q = torch.clamp(dist / dist.sum(), min=eps)
 
         # log_loss = pij * (torch.log(dist) - torch.log(qij))
-        log_loss = p.dot(torch.log(p) - torch.log(q))
+        log_loss = p.dot(torch.log(torch.clamp(p, min=eps)) - torch.log(q))
 
         return log_loss.sum()
