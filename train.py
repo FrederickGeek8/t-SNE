@@ -15,6 +15,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-load", "--load_path", type=str, required=True)
+    parser.add_argument("-n", "--number_points", type=int, default=1797)
     parser.add_argument("-epochs", "--epochs", type=int, default=1000)
     parser.add_argument("-lr", "--learning_rate", type=float, default=200)
     parser.add_argument("-save", "--save_path", type=str, default=None)
@@ -29,12 +30,12 @@ if __name__ == "__main__":
     if torch.cuda.is_available():
         p = p.cuda()
 
-    model = tSNE(720)
+    model = tSNE(args.number_points)
     opt = optim.SGD(model.parameters(),
                     lr=args.learning_rate,
                     momentum=momentum)
     writer = SummaryWriter(args.tensorboard_path)
-    total = torch.arange(720)
+    total = torch.arange(args.number_points)
     print(f"Training with early exaggeration for {stop_lying_iter} epochs")
     for epoch in range(args.epochs):
         # print(f"Epoch {epoch}")
