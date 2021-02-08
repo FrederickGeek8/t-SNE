@@ -38,15 +38,12 @@ if __name__ == "__main__":
     total = torch.arange(args.number_points)
     print(f"Training with early exaggeration for {stop_lying_iter} epochs")
     for epoch in range(args.epochs):
-        # print(f"Epoch {epoch}")
+        print(f"Epoch {epoch}")
         model.zero_grad()
-        total_loss = 0
         loss = model(p)
         loss.backward()
 
         opt.step()
-
-        total_loss += loss.item()
 
         if epoch == mom_switch_iter:
             print("Momentum switch")

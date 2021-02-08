@@ -25,7 +25,5 @@ if __name__ == "__main__":
     digits = datasets.load_digits()
     pij = preprocess(digits.data)
 
-    print(digits.data.shape)
-
     f = open(f"{args.out_file}", "wb")
     np.save(f, pij)

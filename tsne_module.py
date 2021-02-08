@@ -14,7 +14,7 @@ class tSNE(nn.Module):
         all_y = self.embedding.weight
         dist = F.pdist(all_y).pow(2)
         dist = (1. + dist).pow(-1.0 * self.degrees_of_freedom)
-        q = torch.clamp(dist / dist.sum(), min=eps)
+        q = torch.clamp(dist / (2 * dist.sum()), min=eps)
 
         # log_loss = pij * (torch.log(dist) - torch.log(qij))
         log_loss = p.dot(torch.log(torch.clamp(p, min=eps)) - torch.log(q))
